@@ -15,40 +15,30 @@ const Registration = () => {
   const [lastName, setLastName] = useState("");
 
   registerUser = async (email, password, firstName, lastName) => {
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        firebase
-          .auth()
-          .currentUser.sendEmailVerification({
-            handleCodeInApp: true,
-            url: "https://reservations-77a98.firebaseapp.com",
-          })
-          .then(() => {
-            alert("Verification email sent");
-          })
-          .catch((error) => {
-            alert(error.message);
-          })
-          .then(() => {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(firebase.auth().currentUser.uid)
-              .set({
-                firstName,
-                lastName,
-                email,
-              });
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-      })
-      .catch((error) => {
-        alert(error.message);
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+      await firebase.auth().currentUser.sendEmailVerification({
+        handleCodeInApp: true,
+        url: "https://reservations-77a98.firebaseapp.com",
       });
+
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.uid)
+        .set({
+          firstName,
+          lastName,
+          email,
+        });
+
+      alert(
+        "Registration successful. Please check your email for verification."
+      );
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (

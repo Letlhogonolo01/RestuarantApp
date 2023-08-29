@@ -17,9 +17,27 @@ const Login = () => {
   loginUser = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
+      if (firebase.auth().currentUser.emailVerified) {
+        navigation.navigate("Dashboard");
+      } else {
+        alert("Login successful.");
+      }
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  // Forgot passowrd
+  const forgotPassword = () => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert("Password resert email sent");
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   return (
@@ -54,6 +72,16 @@ const Login = () => {
       >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>
           Don't have an account? Register Now
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          forgotPassword();
+        }}
+        style={{ marginTop: 20 }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
+          Forgot Passowrd?
         </Text>
       </TouchableOpacity>
     </View>
