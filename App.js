@@ -8,6 +8,8 @@ import Login from "./src/screens/Login";
 import Registation from "./src/screens/Registration";
 import Dashboard from "./src/screens/Dashboard";
 import Header from "./src/components/Header";
+import RestaurantDetails from "./src/screens/RestaurantDetails";
+import ConfirmReservation from "./src/screens/ConfirmReservation";
 
 const Stack = createStackNavigator();
 
@@ -70,6 +72,7 @@ function App() {
             />
           </>
         ) : (
+          <>
           <Stack.Screen
             name="Dashboard"
             component={Dashboard}
@@ -85,6 +88,37 @@ function App() {
               },
             }}
           />
+          <Stack.Screen
+            name="RestaurantDetails"
+            component={RestaurantDetails}
+            options={{
+              headerTitle: () => <Header name="RestaurantDetails" />,
+              headerStyle: {
+                height: 100,
+                borderBottomLeftRadius: 50,
+                borderBottomRightRadius: 50,
+                backgroundColor: "#00e4d0",
+                shadowColor: "#000",
+                elevation: 25,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ConfirmReservation"
+            component={ConfirmReservation}
+            options={{
+              headerTitle: () => <Header name="ConfirmReservation" />,
+              headerStyle: {
+                height: 100,
+                borderBottomLeftRadius: 50,
+                borderBottomRightRadius: 50,
+                backgroundColor: "#00e4d0",
+                shadowColor: "#000",
+                elevation: 25,
+              },
+            }}
+          />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

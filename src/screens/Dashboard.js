@@ -72,8 +72,7 @@ const Dashboard = () => {
             image={restaurant.image}
             description={restaurant.description}
             onViewDetails={() => {
-              // Handle view details button press
-              // You can navigate to a restaurant details screen here if needed
+              navigation.navigate("RestaurantDetails", { restaurant });
             }}
           />
         ))}
