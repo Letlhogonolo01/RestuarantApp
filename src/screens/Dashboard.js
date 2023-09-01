@@ -57,7 +57,7 @@ const Dashboard = () => {
       .catch((error) => {
         alert(error);
       });
-  };
+  }; 
 
   return (
     <SafeAreaView style={styles.container}>
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-    height: 70,
-    width: 250,
+    height: 50,
+    width: 180,
     backgroundColor: "#026efd",
     alignItems: "center",
     justifyContent: "center",

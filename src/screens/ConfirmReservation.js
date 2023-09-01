@@ -1,39 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../../config";
 
 const ConfirmReservation = ({ route }) => {
-    const [name, setName] = useState("");
+  const [user, setUser] = useState({});
   const { restaurant, reservation } = route.params;
 
-  const parsedDate = new Date(Date.parse(reservation.date));
-  const parsedTime = new Date(Date.parse(reservation.time));
+  const parsedDate = new Date(Date.parse(reservation.selectedDate));
+  const parsedTime = new Date(Date.parse(reservation.selectedTime));
+
+  const navigation = useNavigation();
 
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(firebase.auth().currentUser.uid)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists) {
-          setName(snapshot.data());
+    const fetchUser = async () => {
+      try {
+        const userSnapshot = await firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .get();
+        if (userSnapshot.exists) {
+          setUser(userSnapshot.data());
         } else {
           console.log("User does not exist");
         }
-      });
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
   }, []);
+
+  const handleDone = () => {
+    navigation.navigate("Dashboard");
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.heading}>Confirm Reservation</Text>
-        <Text style={styles.info}>User: {name.firstName}</Text>
-        <Text style={styles.info}>Restaurant: {restaurant.name}</Text>
+        <Text style={styles.info}>UserName: {user.firstName}</Text>
+        <Text style={styles.info}>UserEmail: {user.email}</Text>
+        <Text style={styles.info}>RestaurantName: {restaurant.name}</Text>
         <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
         <Text style={styles.info}>Time: {parsedTime.toLocaleTimeString()}</Text>
-        <Text style={styles.info}>Number of Guests: {reservation.guests}</Text>
-        {/* You can add more fields or customize the confirmation form */}
+        <Text style={styles.info}>
+          Number of Guests: {reservation.numOfGuests}
+        </Text>
+        <TouchableOpacity style={styles.button} onPress={handleDone}>
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -65,8 +83,21 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   info: {
-    fontSize: 18, // Adjust this value to your preference
+    fontSize: 18,
     marginBottom: 10,
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: "#026efd",
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
 

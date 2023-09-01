@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { firebase } from "../../config";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const RestaurantDetails = ({ route }) => {
   const { name, image, description } = route.params.restaurant;
@@ -14,15 +15,31 @@ const RestaurantDetails = ({ route }) => {
 
   const navigation = useNavigation();
 
-  const handleMakeReservation = () => {
-    navigation.navigate("ConfirmReservation", {
-      restaurant: { name, image, description },
-      reservation: {
-        date: selectedDate.toISOString(),
-        time: selectedTime.toISOString(),
-        guests: numOfGuests,
-      },
-    });
+  const handleMakeReservation = async () => {
+    try {
+      if (!selectedDate || !selectedTime) {
+        alert("Please select a date and time.");
+        return;
+      }
+
+      const reservationData = {
+        name,
+        image,
+        description,
+        selectedDate: selectedDate.toString(),
+        selectedTime: selectedTime.toString(), 
+        numOfGuests,
+      };
+
+      await firebase.firestore().collection("bookings").add(reservationData);
+
+      navigation.navigate("ConfirmReservation", {
+        restaurant: { name, image, description },
+        reservation: reservationData,
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleDateChange = (event, date) => {
@@ -41,49 +58,49 @@ const RestaurantDetails = ({ route }) => {
 
   return (
     <View style={styles.container}>
-    <View style={styles.card}>
-      <Image source={image} style={styles.image} />
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.description}>{description}</Text>
-      <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-        <Text style={{fontSize: 18, marginBottom: 10,}}>Select Date</Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={selectedDate}
-          mode="date"
-          onChange={handleDateChange}
-        />
-      )}
-      <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-        <Text style={{fontSize: 18}}>Select Time</Text>
-      </TouchableOpacity>
-      {showTimePicker && (
-        <DateTimePicker
-          value={selectedTime}
-          mode="time"
-          is24Hour={true}
-          onChange={handleTimeChange}
-        />
-      )}
-       <View style={styles.guestsContainer}>
-        <TouchableOpacity
-          style={styles.guestButtonMinus}
-          onPress={() => setNumOfGuests(numOfGuests - 1)}
-        >
-          <Text style={styles.guestButtonText}>-</Text>
+      <View style={styles.card}>
+        <Image source={image} style={styles.image} />
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+          <Text style={{ fontSize: 18, marginBottom: 10 }}>Select Date</Text>
         </TouchableOpacity>
-        <Text style={styles.numOfGuests}>{numOfGuests}</Text>
-        <TouchableOpacity
-          style={styles.guestButtonPlus}
-          onPress={() => setNumOfGuests(numOfGuests + 1)}
-        >
-          <Text style={styles.guestButtonText}>+</Text>
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            onChange={handleDateChange}
+          />
+        )}
+        <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+          <Text style={{ fontSize: 18 }}>Select Time</Text>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={handleMakeReservation}>
-        <Text style={styles.buttonText}>Make Reservation</Text>
-      </TouchableOpacity>
+        {showTimePicker && (
+          <DateTimePicker
+            value={selectedTime}
+            mode="time"
+            is24Hour={true}
+            onChange={handleTimeChange}
+          />
+        )}
+        <View style={styles.guestsContainer}>
+          <TouchableOpacity
+            style={styles.guestButtonMinus}
+            onPress={() => setNumOfGuests(numOfGuests - 1)}
+          >
+            <Text style={styles.guestButtonText}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.numOfGuests}>{numOfGuests}</Text>
+          <TouchableOpacity
+            style={styles.guestButtonPlus}
+            onPress={() => setNumOfGuests(numOfGuests + 1)}
+          >
+            <Text style={styles.guestButtonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleMakeReservation}>
+          <Text style={styles.buttonText}>Make Reservation</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -110,7 +127,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: "center",
     justifyContent: "center",
-},
+  },
   image: {
     width: "100%",
     height: 150,
