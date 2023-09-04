@@ -6,11 +6,10 @@ import { firebase } from "../../config";
 const ConfirmReservation = ({ route }) => {
   const [user, setUser] = useState({});
   const { restaurant, reservation } = route.params;
+  const navigation = useNavigation();
 
   const parsedDate = new Date(Date.parse(reservation.selectedDate));
   const parsedTime = new Date(Date.parse(reservation.selectedTime));
-
-  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -33,8 +32,35 @@ const ConfirmReservation = ({ route }) => {
     fetchUser();
   }, []);
 
-  const handleDone = () => {
-    navigation.navigate("Dashboard");
+  const handleDone = async () => {
+    try {
+      const userId = firebase.auth().currentUser.uid;
+      const userReservationsRef = firebase
+        .firestore()
+        .collection("userReservations")
+        .doc(userId);
+
+      // Check if the userReservations document exists
+      const doc = await userReservationsRef.get();
+      if (!doc.exists) {
+        // If it doesn't exist, create it with an empty reservations array
+        await userReservationsRef.set({ reservations: [] });
+      }
+
+      // Save the reservation to the user's reservations in Firebase
+      await userReservationsRef.update({
+        reservations: firebase.firestore.FieldValue.arrayUnion({
+          restaurantName: restaurant.name,
+          selectedDate: reservation.selectedDate,
+          selectedTime: reservation.selectedTime,
+          numOfGuests: reservation.numOfGuests,
+        }),
+      });
+
+      navigation.navigate("Dashboard");
+    } catch (error) {
+      console.error("Error saving reservation:", error);
+    }
   };
 
   return (

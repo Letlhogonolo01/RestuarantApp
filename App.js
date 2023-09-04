@@ -8,6 +8,7 @@ import Login from "./src/screens/Login";
 import Registation from "./src/screens/Registration";
 import Dashboard from "./src/screens/Dashboard";
 import Header from "./src/components/Header";
+import Profile from "./src/screens/Profile";
 import RestaurantDetails from "./src/screens/RestaurantDetails";
 import ConfirmReservation from "./src/screens/ConfirmReservation";
 
@@ -108,6 +109,21 @@ function App() {
             component={ConfirmReservation}
             options={{
               headerTitle: () => <Header name="ConfirmReservation" />,
+              headerStyle: {
+                height: 100,
+                borderBottomLeftRadius: 50,
+                borderBottomRightRadius: 50,
+                backgroundColor: "#a2d2ff",
+                shadowColor: "#000",
+                elevation: 25,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              headerTitle: () => <Header name="Profile" />,
               headerStyle: {
                 height: 100,
                 borderBottomLeftRadius: 50,

@@ -1,11 +1,13 @@
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  View,
+  Image,
 } from "react-native";
-import React, { useState, useEffect } from "react";
 import { firebase } from "../../config";
 import { useNavigation } from "@react-navigation/native";
 import RestaurantCard from "../components/RestaurantCard";
@@ -47,23 +49,24 @@ const Dashboard = () => {
       });
   }, []);
 
-  const changePassword = () => {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(firebase.auth().currentUser.email)
-      .then(() => {
-        alert("Password reset email sent");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }; 
-
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}>
-        Hello, {name.firstName}
-      </Text>
+      <View style={styles.header}>
+        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}>
+          Hello, {name.firstName}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
+          style={styles.profileIcon}
+        >
+          <Image
+            source={require("../../assets/profile-icon.png")}
+            style={{ width: 30, height: 30, borderRadius: 20, }}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView>
         {restaurants.map((restaurant, index) => (
           <RestaurantCard
@@ -77,47 +80,26 @@ const Dashboard = () => {
           />
         ))}
       </ScrollView>
-      <TouchableOpacity
-        onPress={() => {
-          changePassword();
-        }}
-        style={styles.button}
-      >
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>
-          Change Password
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          firebase
-            .auth()
-            .signOut()
-            .then(() => {
-              navigation.navigate("Login");
-            });
-        }}
-        style={styles.button}
-      >
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>Sign out</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 20,
   },
-  button: {
-    marginTop: 10,
-    height: 50,
-    width: 180,
-    backgroundColor: "#026efd",
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  profileIcon: {
+    backgroundColor: "#026efd",
     borderRadius: 50,
+    padding: 8,
+    margin: 5,
   },
 });
+
+export default Dashboard;
