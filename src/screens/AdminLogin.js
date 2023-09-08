@@ -1,48 +1,33 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from "react-native";
 import React, { useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../../config";
 
-const Login = () => {
+const AdminLogin = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  loginUser = async (email, password) => {
+  const loginAdmin = async (email, password) => {
     try {
+      // Authenticate admin using Firebase Authentication
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      if (firebase.auth().currentUser.emailVerified) {
-        navigation.navigate("Dashboard");
+      
+      // Check if the admin's email matches the predefined admin email
+      if (email === "admin@dd.co.za") {
+        // Admin login successful, navigate to the admin dashboard
+        navigation.navigate("RestaurantOwner");
       } else {
-        alert("Login successful.");
+        alert("Invalid admin credentials.");
       }
     } catch (error) {
       alert(error.message);
     }
   };
 
-  // Forgot passowrd
-  const forgotPassword = () => {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        alert("Password resert email sent");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={{ fontWeight: "bold", fontSize: 26 }}>Login</Text>
+      <Text style={{ fontWeight: "bold", fontSize: 26 }}>Admin Login</Text>
       <View style={{ marginTop: 40 }}>
         <TextInput
           style={styles.textInput}
@@ -61,42 +46,16 @@ const Login = () => {
         />
       </View>
       <TouchableOpacity
-        onPress={() => loginUser(email, password)}
+        onPress={() => loginAdmin(email, password)}
         style={styles.button}
       >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("AdminLogin")}
-        style={{ marginTop: 20 }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-          Login as Admin
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          forgotPassword();
-        }}
-        style={{ marginTop: 20 }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-          Forgot Passowrd?
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Registration")}
-        style={{ marginTop: 20 }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-          Don't have an account? Register Now
-        </Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Login;
+export default AdminLogin;
 
 const styles = StyleSheet.create({
   container: {

@@ -67,9 +67,9 @@ const ConfirmReservation = ({ route }) => {
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.heading}>Confirm Reservation</Text>
-        <Text style={styles.info}>UserName: {user.firstName}</Text>
-        <Text style={styles.info}>UserEmail: {user.email}</Text>
-        <Text style={styles.info}>RestaurantName: {restaurant.name}</Text>
+        <Text style={styles.info}>Name: {user.firstName}</Text>
+        <Text style={styles.info}>Email: {user.email}</Text>
+        <Text style={styles.info}>Restaurant Name: {restaurant.name}</Text>
         <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
         <Text style={styles.info}>Time: {parsedTime.toLocaleTimeString()}</Text>
         <Text style={styles.info}>

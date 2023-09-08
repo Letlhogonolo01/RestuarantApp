@@ -7,8 +7,10 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { firebase } from "../../config";
+import { useNavigation } from "@react-navigation/native";
 
 const Registration = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -79,6 +81,14 @@ const Registration = () => {
         style={styles.button}
       >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Register</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Login")}
+        style={{ marginTop: 20 }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
+          Already have an account? Login
+        </Text>
       </TouchableOpacity>
     </View>
   );
