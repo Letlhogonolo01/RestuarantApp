@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { firebase } from "../../config";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,32 +9,64 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
 
-  registerUser = async (email, password, firstName, lastName) => {
+  // Register a user with Firebase
+  const registerUser = async (email, password, firstName, lastName, isAdmin) => {
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const currentUser = firebase.auth().currentUser;
 
-      await firebase.auth().currentUser.sendEmailVerification({
-        handleCodeInApp: true,
-        url: "https://reservations-77a98.firebaseapp.com",
+      // Add the user profile to Firestore
+      await firebase.firestore().collection("users").doc(currentUser.uid).set({
+        firstName,
+        lastName,
+        email,
+        isAdmin: isAdmin || false, // Set isAdmin to true for admin users
+        // Other user data
       });
 
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(firebase.auth().currentUser.uid)
-        .set({
-          firstName,
-          lastName,
-          email,
-        });
+      // Send email verification
+      await currentUser.sendEmailVerification({
+        handleCodeInApp: true,
+        url: "https://reservations-77a98.firebaseapp.com", // Change to your app URL
+      });
 
-      alert(
-        "Registration successful. Please check your email for verification."
-      );
+      alert("Registration successful. Please check your email for verification.");
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
+  const onAuthStateChanged = (user) => {
+    if (user) {
+      // User is signed in, fetch their profile
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            const userData = doc.data();
+            setUser({ ...user, isAdmin: userData.isAdmin });
+          }
+        })
+        .catch((error) => {
+          // Handle Firestore error
+          alert("Firestore error: " + error.message);
+        });
+    } else {
+      // User is signed out
+      setUser(null);
+    }
+    if (initializing) setInitializing(false);
   };
 
   return (
@@ -77,7 +103,7 @@ const Registration = () => {
         />
       </View>
       <TouchableOpacity
-        onPress={() => registerUser(email, password, firstName, lastName)}
+        onPress={() => registerUser(email, password, firstName, lastName, false)}
         style={styles.button}
       >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Register</Text>

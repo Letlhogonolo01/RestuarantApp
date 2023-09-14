@@ -1,12 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState, useEffect } from "react";
 import { firebase } from "./config";
-
 import Welcome from "./src/screens/Welcome";
 import Login from "./src/screens/Login";
 import AdminLogin from "./src/screens/AdminLogin";
-import Registation from "./src/screens/Registration";
+import Registration from "./src/screens/Registration";
 import Dashboard from "./src/screens/Dashboard";
 import Header from "./src/components/Header";
 import Profile from "./src/screens/Profile";
@@ -18,7 +17,7 @@ const Stack = createStackNavigator();
 
 function App() {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   // Handle user state changes
   function onAuthStateChanged(user) {
@@ -75,7 +74,7 @@ function App() {
             />
             <Stack.Screen
               name="Registration"
-              component={Registation}
+              component={Registration}
               options={{
                 headerTitle: () => <Header name="DishDelight" />,
                 headerStyle: {
@@ -92,81 +91,80 @@ function App() {
         ) : (
           <>
           <Stack.Screen
-            name="RestaurantOwner"
-            component={RestaurantOwner}
-            options={{
-              headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
-              headerStyle: {
-                height: 100,
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
-                backgroundColor: "#a2d2ff",
-                shadowColor: "#000",
-                elevation: 25,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="Dashboard"
-            component={Dashboard}
-            options={{
-              headerTitle: () => <Header name="Restaurants" />,
-              headerStyle: {
-                height: 100,
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
-                backgroundColor: "#a2d2ff",
-                shadowColor: "#000",
-                elevation: 25,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="RestaurantDetails"
-            component={RestaurantDetails}
-            options={{
-              headerTitle: () => <Header name="RestaurantDetails" />,
-              headerStyle: {
-                height: 100,
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
-                backgroundColor: "#a2d2ff",
-                shadowColor: "#000",
-                elevation: 25,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="ConfirmReservation"
-            component={ConfirmReservation}
-            options={{
-              headerTitle: () => <Header name="ConfirmReservation" />,
-              headerStyle: {
-                height: 100,
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
-                backgroundColor: "#a2d2ff",
-                shadowColor: "#000",
-                elevation: 25,
-              },
-            }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              headerTitle: () => <Header name="Profile" />,
-              headerStyle: {
-                height: 100,
-                borderBottomLeftRadius: 50,
-                borderBottomRightRadius: 50,
-                backgroundColor: "#a2d2ff",
-                shadowColor: "#000",
-                elevation: 25,
-              },
-            }}
-          />
-          
+              name="RestaurantOwner"
+              component={RestaurantOwner}
+              options={{
+                headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
+                headerStyle: {
+                  height: 100,
+                  borderBottomLeftRadius: 50,
+                  borderBottomRightRadius: 50,
+                  backgroundColor: "#a2d2ff",
+                  shadowColor: "#000",
+                  elevation: 25,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Dashboard"
+              component={Dashboard}
+              options={{
+                headerTitle: () => <Header name="Restaurants" />,
+                headerStyle: {
+                  height: 100,
+                  borderBottomLeftRadius: 50,
+                  borderBottomRightRadius: 50,
+                  backgroundColor: "#a2d2ff",
+                  shadowColor: "#000",
+                  elevation: 25,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="RestaurantDetails"
+              component={RestaurantDetails}
+              options={{
+                headerTitle: () => <Header name="RestaurantDetails" />,
+                headerStyle: {
+                  height: 100,
+                  borderBottomLeftRadius: 50,
+                  borderBottomRightRadius: 50,
+                  backgroundColor: "#a2d2ff",
+                  shadowColor: "#000",
+                  elevation: 25,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="ConfirmReservation"
+              component={ConfirmReservation}
+              options={{
+                headerTitle: () => <Header name="ConfirmReservation" />,
+                headerStyle: {
+                  height: 100,
+                  borderBottomLeftRadius: 50,
+                  borderBottomRightRadius: 50,
+                  backgroundColor: "#a2d2ff",
+                  shadowColor: "#000",
+                  elevation: 25,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                headerTitle: () => <Header name="Profile" />,
+                headerStyle: {
+                  height: 100,
+                  borderBottomLeftRadius: 50,
+                  borderBottomRightRadius: 50,
+                  backgroundColor: "#a2d2ff",
+                  shadowColor: "#000",
+                  elevation: 25,
+                },
+              }}
+            />
           </>
         )}
       </Stack.Navigator>
@@ -175,3 +173,4 @@ function App() {
 }
 
 export default App;
+
