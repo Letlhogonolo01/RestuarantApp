@@ -90,21 +90,6 @@ function App() {
           </>
         ) : (
           <>
-          <Stack.Screen
-              name="RestaurantOwner"
-              component={RestaurantOwner}
-              options={{
-                headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
-                headerStyle: {
-                  height: 100,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
             <Stack.Screen
               name="Dashboard"
               component={Dashboard}
@@ -165,6 +150,21 @@ function App() {
                 },
               }}
             />
+              <Stack.Screen
+                  name="RestaurantOwner"
+                  component={RestaurantOwner}
+                  options={{
+                    headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
+                    headerStyle: {
+                      height: 100,
+                      borderBottomLeftRadius: 50,
+                      borderBottomRightRadius: 50,
+                      backgroundColor: "#a2d2ff",
+                      shadowColor: "#000",
+                      elevation: 25,
+                    },
+                  }}
+                />
           </>
         )}
       </Stack.Navigator>

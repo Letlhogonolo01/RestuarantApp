@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   reservationInfo: {
     fontSize: 16,
     marginBottom: 5,
+    fontWeight: "bold"
   },
 });
 

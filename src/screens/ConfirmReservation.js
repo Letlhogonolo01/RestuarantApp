@@ -65,21 +65,24 @@ const ConfirmReservation = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.heading}>Confirm Reservation</Text>
-        <Text style={styles.info}>Name: {user.firstName}</Text>
-        <Text style={styles.info}>Email: {user.email}</Text>
-        <Text style={styles.info}>Restaurant Name: {restaurant.name}</Text>
-        <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
-        <Text style={styles.info}>Time: {parsedTime.toLocaleTimeString()}</Text>
-        <Text style={styles.info}>
-          Number of Guests: {reservation.numOfGuests}
-        </Text>
-        <TouchableOpacity style={styles.button} onPress={handleDone}>
-          <Text style={styles.buttonText}>Done</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.card}>
+      <Text style={styles.heading}>Confirm Reservation</Text>
+      <Text style={styles.info}>Name: {user.firstName}</Text>
+      <Text style={styles.info}>Email: {user.email}</Text>
+      <Text style={styles.info}>Restaurant Name: {restaurant.name}</Text>
+      <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
+      <Text style={styles.info}>Time: {parsedTime.toLocaleTimeString()}</Text>
+      <Text style={styles.info}>
+        Number of Guests: {reservation.numOfGuests}
+      </Text>
+      <Text style={styles.congratulatoryMessage}>
+        Congratulations! Your reservation has been successfully made.
+      </Text>
+      <TouchableOpacity style={styles.button} onPress={handleDone}>
+        <Text style={styles.buttonText}>Done</Text>
+      </TouchableOpacity>
     </View>
+  </View>
   );
 };
 
@@ -125,6 +128,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
+  congratulatoryMessage: {
+    fontSize: 21,
+    fontWeight: "bold",
+    fontStyle: "italic",
+    color: "green", 
+    textAlign: "center",
+    marginTop: 20,
+  },
+  
 });
 
 export default ConfirmReservation;
