@@ -9,17 +9,28 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
 
   const loginAdmin = async (email, password) => {
+    console.log("Logging in with email:", email);
     try {
       // Authenticate admin using Firebase Authentication
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      
-      // Check if the admin's email matches the predefined admin email
-      if (email === "admin@dd.co.za") {
-        // Admin login successful, navigate to the admin dashboard
-        navigation.navigate("RestaurantOwner");
-      } else {
-        alert("Invalid admin credentials.");
-      }
+
+      // Check if the logged-in user is an admin by querying Firestore
+      const userDocRef = firebase.firestore().collection("users").doc(email);
+
+      userDocRef.get().then((doc) => {
+        if (doc.exists) {
+          const userData = doc.data();
+          console.log("Firestore User Data:", userData);
+          if (userData.isAdmin) {
+            // Admin login successful, navigate to the admin dashboard
+            navigation.navigate("RestaurantOwner"); 
+          } else {
+            alert("Invalid admin credentials.");
+          }
+        } else {
+          alert("User does not exist.");
+        }
+      });
     } catch (error) {
       alert(error.message);
     }

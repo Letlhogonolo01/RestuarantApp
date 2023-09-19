@@ -9,6 +9,7 @@ import Registration from "./src/screens/Registration";
 import Dashboard from "./src/screens/Dashboard";
 import Header from "./src/components/Header";
 import Profile from "./src/screens/Profile";
+import ViewBookings from "./src/screens/ViewBookings";
 import RestaurantOwner from "./src/screens/RestaurantOwner";
 import RestaurantDetails from "./src/screens/RestaurantDetails";
 import ConfirmReservation from "./src/screens/ConfirmReservation";
@@ -35,142 +36,157 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {!user ? (
-          <>
-            <Stack.Screen
-              name="Welcome"
-              component={Welcome}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerTitle: () => <Header name="DishDelight" />,
-                headerStyle: {
-                  height: 150,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-            <Stack.Screen
-              name="AdminLogin"
-              component={AdminLogin}
-              options={{
-                headerTitle: () => <Header name="DishDelight" />,
-                headerStyle: {
-                  height: 150,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-            <Stack.Screen
-              name="Registration"
-              component={Registration}
-              options={{
-                headerTitle: () => <Header name="DishDelight" />,
-                headerStyle: {
-                  height: 150,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="Dashboard"
-              component={Dashboard}
-              options={{
-                headerTitle: () => <Header name="Restaurants" />,
-                headerStyle: {
-                  height: 100,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-            <Stack.Screen
-              name="RestaurantDetails"
-              component={RestaurantDetails}
-              options={{
-                headerTitle: () => <Header name="RestaurantDetails" />,
-                headerStyle: {
-                  height: 100,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-            <Stack.Screen
-              name="ConfirmReservation"
-              component={ConfirmReservation}
-              options={{
-                headerTitle: () => <Header name="ConfirmReservation" />,
-                headerStyle: {
-                  height: 100,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{
-                headerTitle: () => <Header name="Profile" />,
-                headerStyle: {
-                  height: 100,
-                  borderBottomLeftRadius: 50,
-                  borderBottomRightRadius: 50,
-                  backgroundColor: "#a2d2ff",
-                  shadowColor: "#000",
-                  elevation: 25,
-                },
-              }}
-            />
-              <Stack.Screen
-                  name="RestaurantOwner"
-                  component={RestaurantOwner}
-                  options={{
-                    headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
-                    headerStyle: {
-                      height: 100,
-                      borderBottomLeftRadius: 50,
-                      borderBottomRightRadius: 50,
-                      backgroundColor: "#a2d2ff",
-                      shadowColor: "#000",
-                      elevation: 25,
-                    },
-                  }}
-                />
-          </>
-        )}
+        <Stack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={{ headerShown: false }}
+        />
+                
+        <Stack.Screen
+          name="Login"
+          component={!user ? Login : Dashboard}
+          options={{
+            headerTitle: () => <Header name="DishDelight" />,
+            headerStyle: {
+              height: 150,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{
+            headerTitle: () => <Header name="DishDelight" />,
+            headerStyle: {
+              height: 150,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="AdminLogin"
+          component={AdminLogin}
+          options={{
+            headerTitle: () => <Header name="DishDelight" />,
+            headerStyle: {
+              height: 150,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Registration"
+          component={Registration}
+          options={{
+            headerTitle: () => <Header name="DishDelight" />,
+            headerStyle: {
+              height: 150,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="RestaurantDetails"
+          component={RestaurantDetails}
+          options={{
+            headerTitle: () => <Header name="RestaurantDetails" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="ConfirmReservation"
+          component={ConfirmReservation}
+          options={{
+            headerTitle: () => <Header name="ConfirmReservation" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerTitle: () => <Header name="Profile" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="RestaurantOwner"
+          component={RestaurantOwner}
+          options={{
+            headerTitle: () => <Header name="Restaurant Owner Dashboard" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="ViewBookings"
+          component={ViewBookings}
+          options={{
+            headerTitle: () => <Header name="View Bookings" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 export default App;
-
