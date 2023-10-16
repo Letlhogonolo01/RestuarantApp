@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { firebase } from "../../config";
 import { useNavigation } from "@react-navigation/native";
-import ViewBookings from "./ViewBookings";
 
 const RestaurantOwner = () => {
   const navigation = useNavigation();
@@ -20,25 +19,34 @@ const RestaurantOwner = () => {
     navigation.navigate("ViewBookings");
   };
 
+  const navigateToBookingStats = () => {
+    navigation.navigate("BookingStats");
+  };
+
+  const navigateToRestaurants = () => {
+    navigation.navigate("Restaurants");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-        RestaurantOwner
+        Admin Dashboard
       </Text>
-      <TouchableOpacity>
-        <Text>Restaurant Management</Text>
+      
+      <TouchableOpacity style={styles.button} onPress={navigateToRestaurants}>
+        <Text style={styles.buttonText}>Restaurant Management</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={navigateToViewBookings}>
-        <Text>View Bookings</Text>
+      <TouchableOpacity style={styles.button} onPress={navigateToViewBookings}>
+        <Text style={styles.buttonText}>View Bookings</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>Booking Statistics</Text>
+      <TouchableOpacity style={styles.button} onPress={navigateToBookingStats}>
+        <Text style={styles.buttonText}>Booking Statistics</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>Confirm Arrivals</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={signOut} style={styles.button}>
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>Sign out</Text>
+
+      <TouchableOpacity onPress={signOut} style={styles.signOutButton}>
+        <Text style={{ fontSize: 22, fontWeight: "bold", color: "#fff" }}>
+          Sign out
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -51,6 +59,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
+    marginTop: 10,
+    height: 40,
+    width: "100%",
+    backgroundColor: "#026efd",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  signOutButton: {
     marginTop: 10,
     height: 40,
     width: 170,

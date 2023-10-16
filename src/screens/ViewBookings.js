@@ -6,27 +6,24 @@ const ViewBookings = () => {
   const [userReservations, setUserReservations] = useState([]);
 
   useEffect(() => {
-    // Fetch user reservations from Firebase Firestore
-    const userId = "admin@dd.co.za"; // Use the actual admin user ID
-    const reservationsRef = firebase.firestore().collection("reservations");
-    
-    reservationsRef.where("userId", "==", userId).get().then((querySnapshot) => {
+    const reservationsRef = firebase.firestore().collection("userReservations");
+
+    reservationsRef.get().then((querySnapshot) => {
       if (!querySnapshot.empty) {
-        // Reservations found for the admin user
         const reservations = [];
         querySnapshot.forEach((doc) => {
-          const reservationData = doc.data();
-          reservations.push(reservationData);
+          const userData = doc.data();
+          const userReservationsData = userData.reservations || [];
+          reservations.push(...userReservationsData);
         });
         setUserReservations(reservations);
       } else {
-        // No reservations found for the admin user
-        console.log("No reservations found for admin user.");
+        console.log("No reservations found.");
       }
     }).catch((error) => {
       console.error("Error querying reservations:", error);
-    });    
-  }, []); // Add an empty dependency array here
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,6 +33,7 @@ const ViewBookings = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.bookingItem}>
+            <Text>Name: {item.firstName}</Text>
             <Text>Restaurant Name: {item.restaurantName}</Text>
             <Text>Date: {item.selectedDate}</Text>
             <Text>Time: {item.selectedTime}</Text>

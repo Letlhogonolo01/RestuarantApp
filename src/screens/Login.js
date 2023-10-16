@@ -14,11 +14,15 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  loginUser = async (email, password) => {
+  const loginUser = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       if (firebase.auth().currentUser.emailVerified) {
-        navigation.navigate("Dashboard");
+        if (email === "admin@dd.co.za" && password === "Admin123") {
+          navigation.navigate("RestaurantOwner");
+        } else {
+          navigation.navigate("Dashboard");
+        }
       } else {
         alert("Login successful.");
       }
@@ -67,14 +71,6 @@ const Login = () => {
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("AdminLogin")}
-        style={{ marginTop: 20 }}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
-          Login as Admin
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         onPress={() => {
           forgotPassword();
         }}
@@ -90,6 +86,14 @@ const Login = () => {
       >
         <Text style={{ fontWeight: "bold", fontSize: 22 }}>
           Don't have an account? Register Now
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AdminLogin")}
+        style={{ marginTop: 20 }}
+      >
+        <Text style={{ fontWeight: "bold", fontSize: 22 }}>
+          Login as Admin
         </Text>
       </TouchableOpacity>
     </View>

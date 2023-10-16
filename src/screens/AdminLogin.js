@@ -1,5 +1,11 @@
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from "react-native";
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../../config";
 
@@ -8,29 +14,14 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginAdmin = async (email, password) => {
-    console.log("Logging in with email:", email);
+  const loginAdmin  = async (email, password) => {
     try {
-      // Authenticate admin using Firebase Authentication
       await firebase.auth().signInWithEmailAndPassword(email, password);
-
-      // Check if the logged-in user is an admin by querying Firestore
-      const userDocRef = firebase.firestore().collection("users").doc(email);
-
-      userDocRef.get().then((doc) => {
-        if (doc.exists) {
-          const userData = doc.data();
-          console.log("Firestore User Data:", userData);
-          if (userData.isAdmin) {
-            // Admin login successful, navigate to the admin dashboard
-            navigation.navigate("RestaurantOwner"); 
-          } else {
-            alert("Invalid admin credentials.");
-          }
+        if (email === "admin@dd.co.za" && password === "Admin123") {
+          navigation.navigate("RestaurantOwner");
         } else {
-          alert("User does not exist.");
-        }
-      });
+        alert("Login successful.");
+      }
     } catch (error) {
       alert(error.message);
     }
@@ -57,11 +48,12 @@ const AdminLogin = () => {
         />
       </View>
       <TouchableOpacity
-        onPress={() => loginAdmin(email, password)}
+        onPress={() => loginAdmin (email, password)}
         style={styles.button}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 22 }}>Login</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 22 }}>Login as Admin</Text>
       </TouchableOpacity>
+     
     </View>
   );
 };

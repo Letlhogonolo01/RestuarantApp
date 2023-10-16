@@ -13,6 +13,8 @@ import ViewBookings from "./src/screens/ViewBookings";
 import RestaurantOwner from "./src/screens/RestaurantOwner";
 import RestaurantDetails from "./src/screens/RestaurantDetails";
 import ConfirmReservation from "./src/screens/ConfirmReservation";
+import BookingStats from "./src/screens/BookingStats";
+import Restaurants from "./src/screens/Restaurants";
 
 const Stack = createStackNavigator();
 
@@ -41,7 +43,7 @@ function App() {
           component={Welcome}
           options={{ headerShown: false }}
         />
-                
+
         <Stack.Screen
           name="Login"
           component={!user ? Login : Dashboard}
@@ -174,6 +176,38 @@ function App() {
           component={ViewBookings}
           options={{
             headerTitle: () => <Header name="View Bookings" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="BookingStats"
+          component={BookingStats}
+          options={{
+            headerTitle: () => <Header name="Booking Stats" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="Restaurants"
+          component={Restaurants}
+          options={{
+            headerTitle: () => <Header name="Restaurants" />,
             headerStyle: {
               height: 100,
               borderBottomLeftRadius: 50,

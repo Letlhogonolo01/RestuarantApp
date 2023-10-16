@@ -12,6 +12,8 @@ const RestaurantDetails = ({ route }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [numOfGuests, setNumOfGuests] = useState(1);
+  const [displayDate, setDisplayDate] = useState("");
+  const [displayTime, setDisplayTime] = useState("");
 
   const navigation = useNavigation();
 
@@ -27,7 +29,7 @@ const RestaurantDetails = ({ route }) => {
         image,
         description,
         selectedDate: selectedDate.toString(),
-        selectedTime: selectedTime.toString(), 
+        selectedTime: selectedTime.toString(),
         numOfGuests,
       };
 
@@ -45,6 +47,7 @@ const RestaurantDetails = ({ route }) => {
   const handleDateChange = (event, date) => {
     if (date !== undefined) {
       setSelectedDate(date);
+      setDisplayDate(date.toDateString());
     }
     setShowDatePicker(false);
   };
@@ -52,6 +55,7 @@ const RestaurantDetails = ({ route }) => {
   const handleTimeChange = (event, time) => {
     if (time !== undefined) {
       setSelectedTime(time);
+      setDisplayTime(time.toLocaleTimeString());
     }
     setShowTimePicker(false);
   };
@@ -71,7 +75,8 @@ const RestaurantDetails = ({ route }) => {
             mode="date"
             onChange={handleDateChange}
           />
-        )}
+          )}
+          {displayDate !== "" && <Text style={styles.date}>Selected Date: {displayDate}</Text>}
         <TouchableOpacity onPress={() => setShowTimePicker(true)}>
           <Text style={{ fontSize: 18 }}>Select Time</Text>
         </TouchableOpacity>
@@ -82,7 +87,9 @@ const RestaurantDetails = ({ route }) => {
             is24Hour={true}
             onChange={handleTimeChange}
           />
-        )}
+          )}
+          {displayTime !== "" && <Text style={styles.date}>Selected Time: {displayTime}</Text>}
+        <Text style={{ fontSize: 18 }}>Number of Guests</Text>
         <View style={styles.guestsContainer}>
           <TouchableOpacity
             style={styles.guestButtonMinus}
@@ -188,6 +195,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 18,
+  },
+  date: {
+    marginBottom: 20,
+    backgroundColor: "lightgrey",
   },
 });
 
