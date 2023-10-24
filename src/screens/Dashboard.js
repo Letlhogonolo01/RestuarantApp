@@ -12,10 +12,12 @@ import { firebase } from "../../config";
 import { useNavigation } from "@react-navigation/native";
 import RestaurantCard from "../components/RestaurantCard";
 
-const Dashboard = () => {
+const Dashboard = ({ route }) => {
   const [name, setName] = useState("");
+  const [addedRestaurants, setAddedRestaurants] = useState([]);
   const navigation = useNavigation();
 
+  // Hard-coded array of restaurants
   const restaurants = [
     {
       name: "Restaurant 1",
@@ -33,6 +35,23 @@ const Dashboard = () => {
       description: "Exquisite cuisine with a modern twist.",
     },
   ];
+
+  useEffect(() => {
+    // Fetch added restaurants from Firebase
+    const unsubscribe = firebase
+      .firestore()
+      .collection("restaurants")
+      .onSnapshot((querySnapshot) => {
+        const restaurants = [];
+        querySnapshot.forEach((doc) => {
+          restaurants.push({ id: doc.id, ...doc.data() });
+        });
+        setAddedRestaurants(restaurants);
+      });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     firebase
@@ -63,16 +82,30 @@ const Dashboard = () => {
         >
           <Image
             source={require("../../assets/profile-icon.png")}
-            style={{ width: 30, height: 30, borderRadius: 20, }}
+            style={{ width: 30, height: 30, borderRadius: 20 }}
           />
         </TouchableOpacity>
       </View>
       <ScrollView>
+        {/* Display hard-coded restaurants */}
         {restaurants.map((restaurant, index) => (
           <RestaurantCard
             key={index}
             name={restaurant.name}
             image={restaurant.image}
+            description={restaurant.description}
+            onViewDetails={() => {
+              navigation.navigate("RestaurantDetails", { restaurant });
+            }}
+          />
+        ))}
+
+        {/* Display added restaurants from Firebase */}
+        {addedRestaurants.map((restaurant, index) => (
+          <RestaurantCard
+            key={index}
+            name={restaurant.name}
+            image={{ uri: restaurant.imageUrl }}
             description={restaurant.description}
             onViewDetails={() => {
               navigation.navigate("RestaurantDetails", { restaurant });

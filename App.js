@@ -15,6 +15,7 @@ import RestaurantDetails from "./src/screens/RestaurantDetails";
 import ConfirmReservation from "./src/screens/ConfirmReservation";
 import BookingStats from "./src/screens/BookingStats";
 import Restaurants from "./src/screens/Restaurants";
+import EditRestaurant from "./src/screens/EditRestaurant";
 
 const Stack = createStackNavigator();
 
@@ -208,6 +209,22 @@ function App() {
           component={Restaurants}
           options={{
             headerTitle: () => <Header name="Restaurants" />,
+            headerStyle: {
+              height: 100,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+              backgroundColor: "#a2d2ff",
+              shadowColor: "#000",
+              elevation: 25,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="EditRestaurant"
+          component={EditRestaurant}
+          options={{
+            headerTitle: () => <Header name="Edit Restaurant" />,
             headerStyle: {
               height: 100,
               borderBottomLeftRadius: 50,

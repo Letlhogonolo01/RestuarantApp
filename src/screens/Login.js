@@ -8,23 +8,27 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../../config";
+import {is} from "firebase/auth"
 
 const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginUser = async (email, password) => {
     try {
+      setIsLoading(true)
       await firebase.auth().signInWithEmailAndPassword(email, password);
       if (firebase.auth().currentUser.emailVerified) {
         if (email === "admin@dd.co.za" && password === "Admin123") {
           navigation.navigate("RestaurantOwner");
         } else {
-          navigation.navigate("Dashboard");
+          navigation.navigate("Dashboard", {isLoading, setIsLoading});
         }
       } else {
         alert("Login successful.");
+        setIsLoading(false)
       }
     } catch (error) {
       alert(error.message);
@@ -46,6 +50,9 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+           {isLoading ? (<Text>Loading... </Text> ): (
+     <>
+     
       <Text style={{ fontWeight: "bold", fontSize: 26 }}>Login</Text>
       <View style={{ marginTop: 40 }}>
         <TextInput
@@ -96,6 +103,8 @@ const Login = () => {
           Login as Admin
         </Text>
       </TouchableOpacity>
+    </>
+    )}
     </View>
   );
 };

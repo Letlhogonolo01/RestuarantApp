@@ -14,6 +14,7 @@ const ConfirmReservation = ({ route }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        
         const userSnapshot = await firebase
           .firestore()
           .collection("users")
@@ -21,6 +22,7 @@ const ConfirmReservation = ({ route }) => {
           .get();
         if (userSnapshot.exists) {
           setUser(userSnapshot.data());
+          
         } else {
           console.log("User does not exist");
         }
