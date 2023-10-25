@@ -8,7 +8,6 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../../config";
-import {is} from "firebase/auth"
 
 const Login = () => {
   const navigation = useNavigation();
@@ -50,9 +49,8 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-           {isLoading ? (<Text>Loading... </Text> ): (
+        {isLoading ? (<Text>Loading... </Text> ): (
      <>
-     
       <Text style={{ fontWeight: "bold", fontSize: 26 }}>Login</Text>
       <View style={{ marginTop: 40 }}>
         <TextInput

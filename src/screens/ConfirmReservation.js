@@ -7,6 +7,7 @@ const ConfirmReservation = ({ route }) => {
   const [user, setUser] = useState({});
   const { restaurant, reservation } = route.params;
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const parsedDate = new Date(Date.parse(reservation.selectedDate));
   const parsedTime = new Date(Date.parse(reservation.selectedTime));
@@ -14,7 +15,6 @@ const ConfirmReservation = ({ route }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        
         const userSnapshot = await firebase
           .firestore()
           .collection("users")
@@ -22,7 +22,6 @@ const ConfirmReservation = ({ route }) => {
           .get();
         if (userSnapshot.exists) {
           setUser(userSnapshot.data());
-          
         } else {
           console.log("User does not exist");
         }
@@ -36,6 +35,7 @@ const ConfirmReservation = ({ route }) => {
 
   const handleDone = async () => {
     try {
+      setIsLoading(true);
       const userId = firebase.auth().currentUser.uid;
       const userReservationsRef = firebase
         .firestore()
@@ -58,8 +58,8 @@ const ConfirmReservation = ({ route }) => {
           numOfGuests: reservation.numOfGuests,
         }),
       });
-
       navigation.navigate("Dashboard");
+      setIsLoading(false);
     } catch (error) {
       console.error("Error saving reservation:", error);
     }
@@ -67,24 +67,32 @@ const ConfirmReservation = ({ route }) => {
 
   return (
     <View style={styles.container}>
-    <View style={styles.card}>
-      <Text style={styles.heading}>Confirm Reservation</Text>
-      <Text style={styles.info}>Name: {user.firstName}</Text>
-      <Text style={styles.info}>Email: {user.email}</Text>
-      <Text style={styles.info}>Restaurant Name: {restaurant.name}</Text>
-      <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
-      <Text style={styles.info}>Time: {parsedTime.toLocaleTimeString()}</Text>
-      <Text style={styles.info}>
-        Number of Guests: {reservation.numOfGuests}
-      </Text>
-      <Text style={styles.congratulatoryMessage}>
-        Congratulations! Your reservation has been successfully made.
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={handleDone}>
-        <Text style={styles.buttonText}>Done</Text>
-      </TouchableOpacity>
+      {isLoading ? (
+        <Text style={{alignItems: "center", marginTop: 100}}>Loading... </Text>
+      ) : (
+        <>
+          <View style={styles.card}>
+            <Text style={styles.heading}>Confirm Reservation</Text>
+            <Text style={styles.info}>Name: {user.firstName}</Text>
+            <Text style={styles.info}>Email: {user.email}</Text>
+            <Text style={styles.info}>Restaurant Name: {restaurant.name}</Text>
+            <Text style={styles.info}>Date: {parsedDate.toDateString()}</Text>
+            <Text style={styles.info}>
+              Time: {parsedTime.toLocaleTimeString()}
+            </Text>
+            <Text style={styles.info}>
+              Number of Guests: {reservation.numOfGuests}
+            </Text>
+            <Text style={styles.congratulatoryMessage}>
+              Congratulations! Your reservation has been successfully made.
+            </Text>
+            <TouchableOpacity style={styles.button} onPress={handleDone}>
+              <Text style={styles.buttonText}>Done</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
-  </View>
   );
 };
 
@@ -134,11 +142,10 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: "bold",
     fontStyle: "italic",
-    color: "green", 
+    color: "green",
     textAlign: "center",
     marginTop: 20,
   },
-  
 });
 
 export default ConfirmReservation;

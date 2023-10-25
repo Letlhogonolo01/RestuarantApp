@@ -49,7 +49,7 @@ function App() {
           name="Login"
           component={!user ? Login : Dashboard}
           options={{
-            headerTitle: () => <Header name="DishDelight" />,
+            headerTitle: () => <Header name="Dish Delight" />,
             headerStyle: {
               height: 150,
               borderBottomLeftRadius: 50,
@@ -65,7 +65,7 @@ function App() {
           name="Dashboard"
           component={Dashboard}
           options={{
-            headerTitle: () => <Header name="DishDelight" />,
+            headerTitle: () => <Header name="Dish Delight" />,
             headerStyle: {
               height: 150,
               borderBottomLeftRadius: 50,
@@ -81,7 +81,7 @@ function App() {
           name="AdminLogin"
           component={AdminLogin}
           options={{
-            headerTitle: () => <Header name="DishDelight" />,
+            headerTitle: () => <Header name="Dish Delight" />,
             headerStyle: {
               height: 150,
               borderBottomLeftRadius: 50,
@@ -96,7 +96,7 @@ function App() {
           name="Registration"
           component={Registration}
           options={{
-            headerTitle: () => <Header name="DishDelight" />,
+            headerTitle: () => <Header name="Dish Delight" />,
             headerStyle: {
               height: 150,
               borderBottomLeftRadius: 50,
@@ -112,7 +112,7 @@ function App() {
           name="RestaurantDetails"
           component={RestaurantDetails}
           options={{
-            headerTitle: () => <Header name="RestaurantDetails" />,
+            headerTitle: () => <Header name="Restaurant Details" />,
             headerStyle: {
               height: 100,
               borderBottomLeftRadius: 50,
@@ -128,7 +128,7 @@ function App() {
           name="ConfirmReservation"
           component={ConfirmReservation}
           options={{
-            headerTitle: () => <Header name="ConfirmReservation" />,
+            headerTitle: () => <Header name="Confirm Reservation" />,
             headerStyle: {
               height: 100,
               borderBottomLeftRadius: 50,
